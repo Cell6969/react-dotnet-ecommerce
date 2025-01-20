@@ -47,3 +47,7 @@ dotnet ef migrations add InitialCreate -o Data/Migrations
 ```shell
 dotnet ef database update
 ```
+4. drop database using ef
+```shell
+dotnet ef database drop
+```
