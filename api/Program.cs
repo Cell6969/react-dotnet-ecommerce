@@ -22,6 +22,11 @@ var app = builder.Build();
 
 // app.UseAuthorization();
 
+app.UseCors(opt =>
+{
+    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:3000");
+});
+
 app.MapControllers();
 
 // start seed db
