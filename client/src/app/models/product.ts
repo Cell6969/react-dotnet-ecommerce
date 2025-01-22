@@ -6,5 +6,5 @@ export type Product = {
   url: string;
   type: string;
   brand: string;
-  stock: number;
+  quantity: number;
 };  
