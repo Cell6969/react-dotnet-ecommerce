@@ -485,3 +485,5 @@ $RECYCLE.BIN/
 
 # Database
 /api/store.db
+
+.vscode
