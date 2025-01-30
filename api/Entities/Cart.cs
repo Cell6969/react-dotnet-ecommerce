@@ -8,6 +8,7 @@ public class Cart
 
     public required string CartId { get; set; }
 
+    // add relation into CartItem
     public List<CartItem> Items { get; set; } = [];
 
     public void AddItem(Product product, int quantity)
