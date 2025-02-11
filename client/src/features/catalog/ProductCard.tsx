@@ -8,8 +8,11 @@ import {
 } from "@mui/material";
 import { Product } from "../../app/models/product";
 import { Link } from "react-router-dom";
+import { useAddCartItemMutation } from "../../api/cartApi";
 
 export default function ProductCard({ product }: { product: Product }) {
+  const [addCartItem, { isLoading }] = useAddCartItemMutation();
+
   return (
     <Card
       elevation={3}
@@ -39,8 +42,15 @@ export default function ProductCard({ product }: { product: Product }) {
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
-        <Button>Add to Cart</Button>
-        <Button component={Link} to={`/catalog/${product.id}`}>View</Button>
+        <Button
+          disabled={isLoading}
+          onClick={() => addCartItem({ productId: product.id, quantity: 1 })}
+        >
+          Add to Cart
+        </Button>
+        <Button component={Link} to={`/catalog/${product.id}`}>
+          View
+        </Button>
       </CardActions>
     </Card>
   );
