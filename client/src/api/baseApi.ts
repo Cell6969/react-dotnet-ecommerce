@@ -9,6 +9,7 @@ import { router } from "../app/router/Router";
 
 const customBaseQuery = fetchBaseQuery({
   baseUrl: "https://localhost:5227/api",
+  credentials: 'include'
 });
 
 type ErrorResponse = string | { title: string } | { errors: string[] };
