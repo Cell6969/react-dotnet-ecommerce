@@ -1,6 +1,6 @@
 import { DarkMode, LightMode, ShoppingCart } from "@mui/icons-material";
 import { AppBar, Badge, Box, IconButton, LinearProgress, List, ListItem, Toolbar, Typography } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAppSelector } from "../../store/store";
 import { useDispatch } from "react-redux";
 import { setDarkMode } from "../../store/slice/uiSlice";
@@ -56,7 +56,7 @@ export default function Navbar() {
         </List>
 
         <Box display='flex' alignItems='center'>
-          <IconButton size="large" sx={{ color: 'inherit' }}>
+          <IconButton size="large" sx={{ color: 'inherit' }} component={Link} to='/cart'>
             <Badge badgeContent='4' color="secondary">
               <ShoppingCart />
             </Badge>
