@@ -34,7 +34,7 @@ export default function Navbar() {
 
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed" sx={{ backgroundColor: '#3f51b5' }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Box>
           <Typography component={NavLink} to='/' variant="h6" sx={{ color: 'white' }}>E-COM</Typography>
@@ -77,7 +77,7 @@ export default function Navbar() {
       </Toolbar>
       {isLoading && (
         <Box sx={{ width: '100%' }}>
-          <LinearProgress color="secondary" />
+          <LinearProgress color="error" />
         </Box>
       )}
     </AppBar>
