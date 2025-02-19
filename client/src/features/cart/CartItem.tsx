@@ -1,8 +1,16 @@
 import { Box, Grid2, IconButton, Paper, Typography } from "@mui/material";
-import { Item } from "../../app/models/basket";
+import { Item } from "../../app/models/cart";
 import { Add, Close, Remove } from "@mui/icons-material";
+import {
+  useAddCartItemMutation,
+  useRemoveCartItemMutation,
+} from "../../api/cartApi";
+import { currencyFormat } from "../../lib/util";
 
 export default function CartItem({ item }: { item: Item }) {
+  const [removeCartItem] = useRemoveCartItemMutation();
+  const [addCartItem] = useAddCartItemMutation();
+
   return (
     <Paper
       sx={{
@@ -34,16 +42,19 @@ export default function CartItem({ item }: { item: Item }) {
 
           <Box display="flex" alignItems="center" gap={3}>
             <Typography sx={{ fontSize: "1.1rem" }}>
-              ${(item.price / 100).toFixed(2)} x {item.quantity}
+              {currencyFormat(item.price)} x {item.quantity}
             </Typography>
 
             <Typography sx={{ fontSize: "1.1rem" }} color="primary">
-              ${((item.price / 100) * item.quantity).toFixed(2)}
+              {currencyFormat(item.price*item.quantity)}
             </Typography>
           </Box>
 
           <Grid2 container spacing={1} alignItems="center">
             <IconButton
+              onClick={() =>
+                removeCartItem({ productId: item.productId, quantity: 1 })
+              }
               color="error"
               size="small"
               sx={{ border: 1, borderRadius: 1, minWidth: 0 }}
@@ -51,6 +62,7 @@ export default function CartItem({ item }: { item: Item }) {
               <Remove />
             </IconButton>
             <IconButton
+              onClick={() => addCartItem({ product: item, quantity: 1 })}
               color="primary"
               size="small"
               sx={{ border: 1, borderRadius: 1, minWidth: 0 }}
@@ -62,6 +74,9 @@ export default function CartItem({ item }: { item: Item }) {
       </Box>
 
       <IconButton
+        onClick={() =>
+          removeCartItem({ productId: item.productId, quantity: item.quantity })
+        }
         color="error"
         size="small"
         sx={{

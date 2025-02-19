@@ -9,6 +9,7 @@ import {
 import { Product } from "../../app/models/product";
 import { Link } from "react-router-dom";
 import { useAddCartItemMutation } from "../../api/cartApi";
+import { currencyFormat } from "../../lib/util";
 
 export default function ProductCard({ product }: { product: Product }) {
   const [addCartItem, { isLoading }] = useAddCartItemMutation();
@@ -38,13 +39,13 @@ export default function ProductCard({ product }: { product: Product }) {
           {product.name}
         </Typography>
         <Typography variant="h6" sx={{ color: "secondary.main" }}>
-          ${(product.price / 100).toFixed(2)}
+          {currencyFormat(product.price)}
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
         <Button
           disabled={isLoading}
-          onClick={() => addCartItem({ productId: product.id, quantity: 1 })}
+          onClick={() => addCartItem({ product: product, quantity: 1 })}
         >
           Add to Cart
         </Button>
