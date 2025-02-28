@@ -1,6 +1,7 @@
 import { Grid2, Typography } from "@mui/material";
 import { useGetCartQuery } from "../../api/cartApi";
 import CartItem from "./CartItem";
+import OrderSummary from "../../app/shared/components/OrderSummary";
 
 export default function CartPage() {
   const { isLoading, data } = useGetCartQuery();
@@ -15,6 +16,9 @@ export default function CartPage() {
         {data.items.map((item) => (
           <CartItem item={item} key={item.productId} />
         ))}
+      </Grid2>
+      <Grid2 size={4}>
+        <OrderSummary />
       </Grid2>
     </Grid2>
   );

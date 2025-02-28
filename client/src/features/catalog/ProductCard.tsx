@@ -16,7 +16,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <Card
-      elevation={3}
+      elevation={3} 
       sx={{
         width: 280,
         borderRadius: 2,
