@@ -35,22 +35,33 @@ export const cartApi = createApi({
         { product, quantity },
         { dispatch, queryFulfilled }
       ) => {
+        let isNewCart = false;
         const patchResult = dispatch(
           cartApi.util.updateQueryData("getCart", undefined, (draft) => {
-            const productId = isProduct(product) ? product.id : product.productId;
-            console.log(product);
-            const existingItem = draft.items.find(
-              (item) => item.productId === productId 
-            );
-            if (existingItem) existingItem.quantity += quantity;
-            else
-              draft.items.push(
-                isProduct(product) ? new Item(product, quantity) :product 
+            const productId = isProduct(product)
+              ? product.id
+              : product.productId;
+
+            if (!draft?.cartId) isNewCart = true;
+
+            if (!isNewCart) {
+              const existingItem = draft.items.find(
+                (item) => item.productId === productId
               );
+              if (existingItem) existingItem.quantity += quantity;
+              else
+                draft.items.push(
+                  isProduct(product)
+                    ? { ...product, productId: product.id, quantity }
+                    : product
+                );
+            }
           })
         );
         try {
           await queryFulfilled;
+          console.log(isNewCart)
+          if (isNewCart) dispatch(cartApi.util.invalidateTags(['Cart']))
         } catch (error) {
           console.log(error);
           patchResult.undo();
