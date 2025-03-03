@@ -9,6 +9,7 @@ import {
 import { currencyFormat } from "../../../lib/util";
 import { useGetCartQuery } from "../../../api/cartApi";
 import { Item } from "../../models/cart";
+import { Link } from "react-router-dom";
 
 export default function OrderSummary() {
   const { data: cart } = useGetCartQuery();
@@ -57,10 +58,19 @@ export default function OrderSummary() {
         </Box>
 
         <Box mt={2}>
-          <Button variant="contained" color="primary" fullWidth sx={{ mb: 1 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mb: 1 }}
+            component={Link}
+            to="/checkout"
+          >
             Checkout
           </Button>
-          <Button fullWidth>Continue Shopping</Button>
+          <Button fullWidth component={Link} to="/catalog">
+            Continue Shopping
+          </Button>
         </Box>
       </Paper>
 
