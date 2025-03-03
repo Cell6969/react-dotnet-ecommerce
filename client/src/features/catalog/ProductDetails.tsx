@@ -12,15 +12,50 @@ import {
   Typography,
 } from "@mui/material";
 import { useFetchProductDetailsQuery } from "../../api/catalogApi";
+import {
+  useAddCartItemMutation,
+  useGetCartQuery,
+  useRemoveCartItemMutation,
+} from "../../api/cartApi";
+import { ChangeEvent, useEffect, useState } from "react";
 
 export default function ProductDetails() {
   const { id } = useParams();
+  const [removeCartItem] = useRemoveCartItemMutation();
+  const [addCartItem] = useAddCartItemMutation();
+  const { data: cart } = useGetCartQuery();
+  const item = cart?.items.find((item) => item.productId === +id!);
+  const [quantity, setQuantity] = useState(0);
+
+  // trigger for replace item quantity if exists
+  useEffect(() => {
+    if (item) setQuantity(item.quantity);
+  }, [item]);
 
   const { data: product, isLoading } = useFetchProductDetailsQuery(
     id ? +id : 0
   );
 
   if (!product || isLoading) return <div></div>;
+
+  // handle update cart item
+  const handleUpdateCart = () => {
+    const updatedQuantity = item
+      ? Math.abs(quantity - item.quantity)
+      : quantity;
+
+    if (!item || quantity > item.quantity) {
+      addCartItem({ product, quantity: updatedQuantity });
+    } else {
+      removeCartItem({ productId: product.id, quantity: updatedQuantity });
+    }
+  };
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = +event.currentTarget.value;
+
+    if (value >= 0) setQuantity(value);
+  };
 
   const productDetails = [
     { label: "Name", value: product.name },
@@ -66,18 +101,23 @@ export default function ProductDetails() {
               type="number"
               label="Quantity in cart"
               fullWidth
-              defaultValue={1}
+              value={quantity}
+              onChange={handleInputChange}
             />
           </Grid2>
           <Grid2 size={6}>
             <Button
+              onClick={handleUpdateCart}
+              disabled={
+                quantity === item?.quantity || (!item && quantity === 0)
+              }
               sx={{ height: "55px" }}
               color="primary"
               size="large"
               variant="contained"
               fullWidth
             >
-              Add to Cart
+              {item ? 'Update Quantity': 'Add to Cart'}
             </Button>
           </Grid2>
         </Grid2>
