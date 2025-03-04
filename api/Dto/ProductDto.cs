@@ -1,8 +1,8 @@
-using System;
+using api.Helper.Pagination;
 
 namespace api.Dto;
 
-public class FilterProductRequest
+public class FilterProductRequest : Pagination
 {
     public string? OrderBy { get; set; }
 
