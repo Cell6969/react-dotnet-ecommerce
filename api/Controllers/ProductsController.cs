@@ -1,4 +1,5 @@
 using api.Data;
+using api.Dto;
 using api.Entities;
 using api.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace api.Controllers
         private readonly StoreContext context = context;
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> ListProducts(string orderBy)
+        public async Task<ActionResult<List<Product>>> ListProducts([FromQuery] FilterProductRequest filter)
         {
             var query = context.Products
-                .Sort(orderBy)
+                .Sort(filter.OrderBy)
+                .Search(filter.Search)
+                .Categorized(filter.Brand, filter.Type)
                 .AsQueryable();
 
             return await query.ToListAsync();
